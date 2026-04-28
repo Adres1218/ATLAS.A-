@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js" class="particles-container"></div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="welcome-icon pulse-glow"><i class="fa-solid fa-bolt"></i></div>
+            <h2 class="premium-text">Atlas AI</h2>
+            <p>Yapay zekanın sınırlarını keşfedin.</p>
+            <div class="gmail-btn glass-effect" onclick="handleLogin()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" alt="G">
+                Google ile Başla
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Atlas AI</span>
+                </div>
+            </div>
+            <div class="sidebar-content">
+                <button class="new-chat-btn" onclick="startNewChat()">
+                    <i class="fa-solid fa-plus"></i> Yeni Sohbet
+                </button>
+                <div class="history-list" id="historyList"></div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="settings-btn" onclick="toggleSettings()">
+                    <i class="fa-solid fa-gear"></i> Ayarlar
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="main-header">
+                <div class="header-left">
+                    <h2 id="viewTitle">Sohbet</h2>
+                    <span class="status-indicator"><span class="dot"></span> Sistem Aktif</span>
+                </div>
+                <div class="top-nav">
+                    <button class="nav-btn active" id="btnChat" onclick="switchView('chat')">Sohbet</button>
+                    <button class="nav-btn" id="btnArt" onclick="switchView('art')">Görsel</button>
+                </div>
+            </header>
+
+            <!-- Chat View -->
+            <div id="chatView" class="view-container">
+                <div id="messagesContainer" class="scroll-area">
+                    <div class="welcome-msg">
+                        <div class="welcome-icon-large"><i class="fa-solid fa-bolt"></i></div>
+                        <h1>Merhaba! Bugün size nasıl yardımcı olabilirim?</h1>
+                        <p>Metin yazabilir, kod yazabilir veya görsel oluşturabilirim.</p>
+                        
+                        <div class="suggestions-grid">
+                            <div class="suggestion-card" onclick="userInput.value='Geleceğin İstanbul şehri, siberpunk stilinde, 8k gerçekçi'; handleSend()">
+                                <i class="fa-solid fa-city"></i>
+                                <span>Siberpunk İstanbul</span>
+                            </div>
+                            <div class="suggestion-card" onclick="userInput.value='Astronot bir kedi, uzayda yüzen balıklar, yağlı boya stili'; handleSend()">
+                                <i class="fa-solid fa-user-astronaut"></i>
+                                <span>Sanatsal Astronot</span>
+                            </div>
+                            <div class="suggestion-card" onclick="userInput.value='Mistik bir orman, devasa parlayan mantarlar, sinematik ışık'; handleSend()">
+                                <i class="fa-solid fa-tree"></i>
+                                <span>Mistik Orman</span>
+                            </div>
+                            <div class="suggestion-card" onclick="userInput.value='Antik Roma temalı modern bir spor araba, hiper gerçekçi'; handleSend()">
+                                <i class="fa-solid fa-car"></i>
+                                <span>Antik Modern Araç</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="artView" class="view-container hidden">
+                <div class="view-header" style="padding:20px 40px; border-bottom:1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center;">
+                    <div class="art-welcome-text">
+                        <h1 style="font-size:1.5rem;">Atlas Görsel</h1>
+                        <p style="font-size:0.8rem; color:var(--text-dim);">Bağımsız Görsel Oluşturma Merkezi</p>
+                    </div>
+                    <div class="art-options" style="display:flex; gap:15px;">
+                        <select id="artStyle" class="glass-select" style="background:var(--card); color:white; border:1px solid var(--glass-border); padding:8px 15px; border-radius:12px; outline:none;">
+                            <option value="">Stil Seçin (Opsiyonel)</option>
+                            <option value="cinematic, highly detailed, photorealistic, 8k">Sinematik</option>
+                            <option value="photographic, realistic, 35mm lens, f/1.8">Fotoğrafik</option>
+                            <option value="anime style, vibrant colors, expressive">Anime</option>
+                            <option value="digital art, clean lines, artstation style">Dijital Sanat</option>
+                            <option value="fantasy art, ethereal, magical lighting">Fantastik</option>
+                            <option value="oil painting, textured, classic art">Yağlı Boya</option>
+                            <option value="pixel art, 8-bit, retro gaming">Piksel Art</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="artGallery" class="scroll-area grid-gallery">
+                    <div class="art-welcome">
+                        <i class="fa-solid fa-palette"></i>
+                        <h1>Atlas Görsel</h1>
+                        <p>Şu anda burada üretim aşaması yok, aşağıdaki siteye giderek üretime devam edebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shared Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <button class="icon-btn" onclick="document.getElementById('fileInput').click()">
+                        <i class="fa-solid fa-image"></i>
+                    </button>
+                    <input type="file" id="fileInput" hidden onchange="handleImageUpload(event)">
+                    
+                    <textarea id="userInput" placeholder="Mesajınızı yazın..." rows="1" oninput="autoResize(this)" onkeydown="handleKeyDown(event)"></textarea>
+                    
+                    <button id="sendBtn" class="send-btn" onclick="handleSend()">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="footer-note">Atlas AI Premium - Güçlü Yapay Zeka Deneyimi</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Ayarlar</h3>
+            <div class="form-group">
+                <label>Groq API Key</label>
+                <input type="password" id="groqApiKey" placeholder="gsk_...">
+            </div>
+            <button class="save-btn" onclick="saveSettings()">Kaydet</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        /* Particles Config */
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#6366f1" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#6366f1", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
